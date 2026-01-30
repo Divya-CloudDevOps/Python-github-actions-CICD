@@ -1,13 +1,9 @@
-from flask import 
-import os
-
-app = Flask(__name__)
+rom flask import Flask
+app = Flask(__my-app__)
 
 @app.route("/")
-def hello():
-    return "updated Flask sample application on azure hghapp service updated verrsion-4"
+def home():
+    return "Flask app deployed using GitHub Actions!"
 
-
-if __name__ == "__main__":
-    port = int(os.environ.get("PORT", 5000))
-    app.run(debug=True,host='0.0.0.0',port=port)
+if name == "__main__":
+    app.run(host="0.0.0.0", port=5
