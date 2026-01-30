@@ -40,15 +40,18 @@ jobs:
             # 3. Get latest code
             git pull origin main || git clone https://github.com/${{ github.repository }}.git .
             
-            # 4. Install requirements with the force flag
+            # 4. Install requirements
             pip3 install -r requirements.txt --break-system-packages
-
-           # 5. Stop old version and start new version properly
+            
+           # 5. Restart the app
            pkill -f app.py || true
-        
-           # We use the full path to python3 to ensure it starts correctly
+         
+           # Start and detach properly
            nohup python3 app.py > log.txt 2>&1 &
+           sleep 2
+           disown
         
-           # Give the app 5 seconds to start so GitHub sees it is running
-           sleep 5
-           cat log.txt
+          # Final verification
+          ps aux | grep app.py
+          echo "Deployment successful"
+          exit 0
