@@ -31,17 +31,18 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           port: ${{ secrets.SERVER_PORT }}
           script: |
-            # Navigate to app directory
-            cd /home/${{ secrets.SERVER_USER }}/my-flask-app || git clone https://github.com/${{ github.repository }}.git
-            cd my-flask-app
+            # 1. Update system and install Python pip
+            sudo apt update && sudo apt install python3-pip -y
             
-            # Pull latest changes
-            git pull origin main
+            # 2. Go to app folder
+            mkdir -p ~/flask_app && cd ~/flask_app
             
-            # Setup/Activate virtual environment and install dependencies
-            python3 -m venv venv
-            source venv/bin/activate
-            pip install -r requirements.txt
+            # 3. Get latest code
+            git pull origin main || git clone https://github.com/${{ github.repository }}.git .
             
-            # Restart the service (assuming you use Gunicorn/Systemd)
-            sudo systemctl restart flaskapp
+            # 4. Install requirements (from your requirements.txt)
+            pip3 install -r requirements.txt
+            
+            # 5. Stop old version and start new version in background
+            pkill -f app.py || true
+            nohup python3 app.py > log.txt 2>&1 &
