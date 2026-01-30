@@ -1,47 +1,26 @@
 name: Deploy Flask App
-
 on:
   push:
     branches:
       - main
-
 jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout Code
-        uses: actions/checkout@v4
-
-      - name: Set up Python
-        uses: actions/setup-python@v4
-        with:
-          python-version: '3.10'
-
-      - name: Deploy to Server via SSH
+      - uses: actions/checkout@v4
+      - name: SSH Deploy
         uses: appleboy/ssh-action@v1.0.3
         with:
           host: ${{ secrets.SERVER_IP }}
           username: ${{ secrets.SERVER_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
-          port: ${{ secrets.SERVER_PORT }}
+          port: 22
           script: |
-            # 1. Update and install dependencies
             sudo apt update && sudo apt install python3-pip -y
-            
-            # 2. Go to folder and get code
             mkdir -p ~/flask_app && cd ~/flask_app
             git pull origin main || git clone https://github.com/${{ github.repository }}.git .
-
-            # 3. Install requirements (Fixes PEP 668 error)
             pip3 install -r requirements.txt --break-system-packages
-
-            # 4. Restart and detach app properly
             pkill -f app.py || true
             nohup python3 app.py > log.txt 2>&1 &
             sleep 5
-            disown
-            
-            # 5. Success signals
-            ps aux | grep app.py
-            echo "Deployment successful"
             exit 0
