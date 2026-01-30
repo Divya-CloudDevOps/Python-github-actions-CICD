@@ -41,8 +41,8 @@ jobs:
             git pull origin main || git clone https://github.com/${{ github.repository }}.git .
             
             # 4. Install requirements (from your requirements.txt)
-            pip3 install -r requirements.txt
+            pip3 install -r requirements.txt --break-system-packages
             
             # 5. Stop old version and start new version in background
             pkill -f app.py || true
-            nohup python3 app.py > log.txt 2>&1 &
+            nohub ./venv/bin/python3 app.py > log.txt 2>&1 &
