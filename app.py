@@ -4,7 +4,7 @@ app = Flask(__name__)
 
 @app.route("/")
 def home():
-    return "Flask app running on EC2 🚀"
+    return "Flask app is running on Amazon Linux 🚀"
 
 if name == "__main__":
     app.run(host="0.0.0.0", port=5000)
