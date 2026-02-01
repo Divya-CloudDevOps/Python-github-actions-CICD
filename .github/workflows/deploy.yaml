@@ -35,8 +35,8 @@ jobs:
             python3 -m pip install --user --upgrade pip
             python3 -m pip install --user -r requirements.txt
 
-            echo "Stopping old Flask app if running"
-            pkill -f app.py || true
+            #echo "Stopping old Flask app if running"
+            #pkill -f app.py || true
 
             echo "Starting Flask app in background"
             nohup python3 app.py > flask.log 2>&1 &
