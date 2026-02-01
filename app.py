@@ -1,9 +1,10 @@
-flask import Flask
-app = Flask(__my-app__)
+from flask import Flask
+
+app = Flask(__name__)
 
 @app.route("/")
 def home():
-    return "Flask app deployed using GitHub Actions!"
+    return "Flask app running on EC2 🚀"
 
-__name__ == "__main__":
-    app.run(host="0.0.0.0", port=5000
+if name == "__main__":
+    app.run(host="0.0.0.0", port=5000)
