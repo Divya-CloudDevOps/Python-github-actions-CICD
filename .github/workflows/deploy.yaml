@@ -42,4 +42,3 @@ jobs:
             nohup python3 app.py > flask.log 2>&1 &
 
             disown
-            exit 0
